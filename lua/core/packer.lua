@@ -54,6 +54,12 @@ return require('packer').startup(function(use)
     }}
     use('lewis6991/gitsigns.nvim')
     use('tpope/vim-fugitive')
+    use {
+        'nvim-tree/nvim-tree.lua',
+        requires = {
+            'nvim-tree/nvim-web-devicons', -- optional
+        },
+    }
 
     -- LSP
     require'lspconfig'.pyright.setup{}
