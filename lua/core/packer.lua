@@ -4,14 +4,17 @@
 vim.cmd [[packadd packer.nvim]]
 
 return require('packer').startup(function(use)
-    -- Packer can manage itself
+    -- Packer itself
     use 'wbthomason/packer.nvim'
 
+    -- Highlighting Color
     use {
         'nvim-telescope/telescope.nvim', tag = '0.1.1',
         -- or                            , branch = '0.1.x',
         requires = { {'nvim-lua/plenary.nvim'} }
     }
+
+    -- Color Scheme
     use({
         'https://github.com/EdenEast/nightfox.nvim',
         as = 'nightfox',
@@ -20,6 +23,7 @@ return require('packer').startup(function(use)
             vim.cmd('colorscheme nightfox')
         end
     })
+
     -- Comment plugin
     use {
         'numToStr/Comment.nvim',
@@ -29,7 +33,7 @@ return require('packer').startup(function(use)
     }
     use('nvim-treesitter/nvim-treesitter', {run = ':TSUpdate'})
 
-    -- Important for order
+    -- LSP config setup, order important
     use { "williamboman/mason.nvim" }
     use ( "williamboman/mason-lspconfig.nvim" )
     use {
@@ -52,8 +56,12 @@ return require('packer').startup(function(use)
         {'hrsh7th/cmp-nvim-lsp'}, -- Required
         {'L3MON4D3/LuaSnip'},     -- Required
     }}
+
+    -- Git
     use('lewis6991/gitsigns.nvim')
     use('tpope/vim-fugitive')
+
+    -- Tree Setup
     use {
         'nvim-tree/nvim-tree.lua',
         requires = {
@@ -64,5 +72,7 @@ return require('packer').startup(function(use)
     -- LSP
     require'lspconfig'.pyright.setup{}
     require'lspconfig'.gopls.setup{}
+    
+    -- Debugging
     use 'mfussenegger/nvim-dap'
 end)
