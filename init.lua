@@ -1,6 +1,5 @@
-require("setup.basic")
+require("core.setup")
+require("core.remap")
+require("core.packer")
 
-require("setup.remap")
-require("setup.packer")
-
-require'lspconfig'.pyright.setup{}
+-- require'lspconfig'.pyright.setup{}
