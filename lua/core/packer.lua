@@ -64,4 +64,5 @@ return require('packer').startup(function(use)
     -- LSP
     require'lspconfig'.pyright.setup{}
     require'lspconfig'.gopls.setup{}
+    use 'mfussenegger/nvim-dap'
 end)
