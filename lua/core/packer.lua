@@ -28,6 +28,10 @@ return require('packer').startup(function(use)
         end
     }
     use('nvim-treesitter/nvim-treesitter', {run = ':TSUpdate'})
+
+    -- Important for order
+    use { "williamboman/mason.nvim" }
+    use ( "williamboman/mason-lspconfig.nvim" )
     use {
         'VonHeikemen/lsp-zero.nvim',
         branch = 'v2.x',
@@ -40,7 +44,8 @@ return require('packer').startup(function(use)
                 pcall(vim.cmd, 'MasonUpdate')
             end,
         },
-        {'williamboman/mason-lspconfig.nvim'}, -- Optional
+        -- Might be deprecated, maintainer gone
+        -- {'williamboman/mason-lspconfig.nvim'}, -- Optional
 
         -- Autocompletion
         {'hrsh7th/nvim-cmp'},     -- Required
@@ -49,4 +54,8 @@ return require('packer').startup(function(use)
     }}
     use('lewis6991/gitsigns.nvim')
     use('tpope/vim-fugitive')
+
+    -- LSP
+    require'lspconfig'.pyright.setup{}
+    require'lspconfig'.gopls.setup{}
 end)
