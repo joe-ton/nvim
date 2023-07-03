@@ -81,6 +81,10 @@ return require('packer').startup(function(use)
     use 'nvim-telescope/telescope-dap.nvim'
     require('telescope').load_extension('dap')
 
+    -- Auto Align
+    use 'echasnovski/mini.nvim'
+    require('mini.align').setup()
+
     -- Auto pairs both sides with brackets
     use {
         "windwp/nvim-autopairs",
