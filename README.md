@@ -1,10 +1,9 @@
-# nvim
-Personal Neovim setup
+**This repo is supposed to used as config by NvChad users!**
 
-# Install
-If 'sudo apt install neovim' keeps loading Neovim 0.7 and you want something
-more recent, follow this Youtube guide here: https://www.youtube.com/watch?v=cBvVCq-q5nw
+- The main nvchad repo (NvChad/NvChad) is used as a plugin by this repo.
+- So you just import its modules , like `require "nvchad.options" , require "nvchad.mappings"`
+- So you can delete the .git from this repo ( when you clone it locally ) or fork it :)
 
-# LSP
-For LSP setup for Golang, use this: https://www.youtube.com/watch?v=i04sSQjd-qo
+# Credits
 
+1) Lazyvim starter https://github.com/LazyVim/starter as nvchad's starter was inspired by Lazyvim's . It made a lot of things easier!
