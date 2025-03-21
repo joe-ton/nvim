@@ -37,4 +37,14 @@ vim.api.nvim_create_autocmd("FileType", {
     end,
 })
 
+-- Show a vertical bar at column 79
+vim.opt.colorcolumn = "79"
+
+-- Enable soft line wrapping at 79 characters (visual wrap, not enforced)
+vim.opt.wrap = true
+vim.opt.linebreak = true
+
+-- Optional: Set text width for automatic hard wrapping at 79 chars
+vim.opt.textwidth = 79
+
 return M
