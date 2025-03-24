@@ -47,4 +47,10 @@ vim.opt.linebreak = true
 -- Optional: Set text width for automatic hard wrapping at 79 chars
 vim.opt.textwidth = 79
 
+-- Shell to auto Go run main.go
+vim.o.shell = "cmd.exe"
+vim.o.shellcmdflag = "/C"
+vim.o.shellxquote = ""
+
+
 return M
