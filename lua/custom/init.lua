@@ -1,4 +1,5 @@
--- Add this near the top of init.lua or wherever you configure LSP
+-- lua/custom/init.lua
+
 local lspconfig = require('lspconfig')
 local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
@@ -36,9 +37,6 @@ vim.api.nvim_create_user_command("GoTags", function()
   vim.notify("Added JSON tags to " .. #struct_names .. " struct(s)")
 end, { desc = "Add JSON tags to all structs in file" })
 
-
--- Install nvim-cmp + dependencies (via your plugin manager like lazy.nvim or packer)
-
 -- Completion
 local cmp = require'cmp'
 cmp.setup({
@@ -51,4 +49,14 @@ cmp.setup({
     { name = 'nvim_lsp' },
     { name = 'buffer' },
   },
+})
+
+-- c++ handler
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = { "cpp", "c", "h", "hpp" },
+  callback = function()
+    vim.opt_local.tabstop = 4
+    vim.opt_local.shiftwidth = 4
+    vim.opt_local.expandtab = true
+  end,
 })
