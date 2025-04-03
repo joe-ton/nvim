@@ -13,6 +13,10 @@ map("i", "jk", "<ESC>")
 map("n", "<leader>r", "<cmd>split | term cmd /C go run %<cr>", { desc = "Run Go file" })
 map("n", "<leader>t", ":GoTags<CR>", { desc = "Add JSON tags to struct" }) -- ✅ This is correct now
 
+-- comment out
+vim.keymap.set("n", "<C-_>", "gcc", { remap = true, desc = "Toggle comment" })
+vim.keymap.set("v", "<C-_>", "gc", { remap = true, desc = "Toggle comment (visual)" })
+
 local harpoon_mark = require("harpoon.mark")
 local harpoon_ui = require("harpoon.ui")
 
