@@ -37,6 +37,17 @@ vim.api.nvim_create_autocmd("FileType", {
     end,
 })
 
+-- Override settings specifically for TypeScript files
+vim.api.nvim_create_autocmd("FileType", {
+    pattern = { "typescript", "typescriptreact" },
+    callback = function()
+        vim.opt_local.tabstop = 4
+        vim.opt_local.shiftwidth = 4
+        vim.opt_local.softtabstop = 4
+        vim.opt_local.expandtab = true
+    end,
+})
+
 -- Show a vertical bar at column 79
 vim.opt.colorcolumn = "79"
 
