@@ -13,7 +13,11 @@ map("n", ";", ":", { desc = "CMD enter command mode" })
 map("i", "jk", "<ESC>")
 
 map("n", "<leader>r", "<cmd>split | term cmd /C go run %<cr>", { desc = "Run Go file" })
-map("n", "<leader>t", ":GoTags<CR>", { desc = "Add JSON tags to struct" }) -- ✅ This is correct now
+map("n", "<leader>t", ":GoTags add json<CR>", { desc = "Add JSON tags to struct" })
+-- Align struct fields in current file using goimports
+vim.keymap.set("n", "<leader>T", "<cmd>!gofumpt -w %<cr><cmd>edit!<cr>", {
+  desc = "Format file using gofumpt"
+})
 
 -- comment out
 vim.keymap.set("n", "<C-_>", "gcc", { remap = true, desc = "Toggle comment" })
