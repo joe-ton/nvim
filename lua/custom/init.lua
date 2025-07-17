@@ -7,6 +7,9 @@ lspconfig.gopls.setup{
   capabilities = capabilities,
 }
 
+-- Maintain 4-line buffer above and below cursor for readability
+vim.opt.scrolloff = 4
+
 vim.api.nvim_create_user_command("GoTags", function()
   local filename = vim.fn.expand("%:p")
   local lines = vim.api.nvim_buf_get_lines(0, 0, -1, false)
@@ -49,6 +52,14 @@ cmp.setup({
     { name = 'nvim_lsp' },
     { name = 'buffer' },
   },
+})
+
+-- Auto-format Go files on save
+vim.api.nvim_create_autocmd("BufWritePre", {
+  pattern = "*.go",
+  callback = function()
+    vim.lsp.buf.format({ async = false })
+  end,
 })
 
 -- c++ handler
