@@ -29,28 +29,6 @@ vim.api.nvim_create_user_command("GoTags", function()
   vim.notify("Added JSON tags to " .. #struct_names .. " struct(s)")
 end, { desc = "Add JSON tags to all structs in file" })
 
--- Completion (your custom cmp setup — NvChad already loads cmp, this overrides mappings)
-local cmp = require'cmp'
-cmp.setup({
-  mapping = cmp.mapping.preset.insert({
-    ['<Tab>'] = cmp.mapping.select_next_item(),
-    ['<S-Tab>'] = cmp.mapping.select_prev_item(),
-    ['<CR>'] = cmp.mapping.confirm({ select = true }),
-  }),
-  sources = {
-    { name = 'nvim_lsp' },
-    { name = 'buffer' },
-  },
-})
-
--- Auto-format Go files on save
-vim.api.nvim_create_autocmd("BufWritePre", {
-  pattern = "*.go",
-  callback = function()
-    vim.lsp.buf.format({ async = false })
-  end,
-})
-
 -- C/C++: force 4-space tabs
 vim.api.nvim_create_autocmd("FileType", {
   pattern = { "cpp", "c", "h", "hpp" },
@@ -60,22 +38,3 @@ vim.api.nvim_create_autocmd("FileType", {
     vim.opt_local.expandtab = true
   end,
 })
-
--- Extra plugins (keep this return table exactly as you had it)
-return {
-  {
-    "stevearc/conform.nvim",
-    opts = require "configs.conform",
-  },
-  {
-    "nvim-treesitter/nvim-treesitter",
-    opts = {
-      ensure_installed = {
-        "vim", "lua", "vimdoc",
-        "html", "css",
-        "go", "markdown",
-      },
-      highlight = { enable = true },
-    },
-  },
-}

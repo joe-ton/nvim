@@ -1,25 +1,11 @@
--- This file needs to have same structure as nvconfig.lua 
--- https://github.com/NvChad/ui/blob/v3.0/lua/nvconfig.lua
--- Please read that file to know all available options :( 
-
+-- lua/chadrc.lua
+-- This file needs to have same structure as nvconfig.lua
 ---@type ChadrcConfig
 local M = {}
 
 M.base46 = {
-	theme = "onedark",
-
-	-- hl_override = {
-	-- 	Comment = { italic = true },
-	-- 	["@comment"] = { italic = true },
-	-- },
+  theme = "onedark",
 }
-
--- M.nvdash = { load_on_startup = true }
--- M.ui = {
---       tabufline = {
---          lazyload = false
---      }
---}
 
 -- Custom Editor Settings
 vim.opt.relativenumber = true
@@ -57,11 +43,5 @@ vim.opt.linebreak = true
 
 -- Optional: Set text width for automatic hard wrapping at 79 chars
 vim.opt.textwidth = 79
-
--- Shell to auto Go run main.go
-vim.o.shell = "cmd.exe"
-vim.o.shellcmdflag = "/C"
-vim.o.shellxquote = ""
-
 
 return M
