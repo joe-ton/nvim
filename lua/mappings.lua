@@ -7,6 +7,8 @@ local map = vim.keymap.set
 map("n", ";", ":", { desc = "CMD enter command mode" })
 map("i", "jk", "<ESC>")
 
+map("n", "K", vim.lsp.buf.hover, { desc = "Show hover information" })
+
 -- Run Go file (Ubuntu/Linux version)
 map("n", "<leader>r", "<cmd>split | term go run %<cr>", { desc = "Run Go file" })
 
