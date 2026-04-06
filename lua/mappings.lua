@@ -10,7 +10,7 @@ map("i", "jk", "<ESC>")
 -- Run Go file (Ubuntu/Linux version)
 map("n", "<leader>r", "<cmd>split | term go run %<cr>", { desc = "Run Go file" })
 
-map("n", "<leader>t", ":GoTags add json<CR>", { desc = "Add JSON tags to struct" })
+map("n", "<leader>t", "<cmd>GoTags<CR>", { desc = "Add JSON tags to all structs" })
 
 -- Align struct fields in current file using goimports
 vim.keymap.set("n", "<leader>T", "<cmd>!gofumpt -w %<cr><cmd>edit!<cr>", {
@@ -39,3 +39,12 @@ vim.keymap.set("n", "<leader>fh", builtin.help_tags, { desc = "Help tags" })
 
 -- delete buffer
 vim.keymap.set("n", "<leader>q", "<cmd>bd<cr>", { desc = "Delete current buffer" })
+
+-- Neotest keymaps (no conflict with your existing <leader>t / <leader>T)
+local map = vim.keymap.set
+
+map("n", "<leader>tt", function() require("neotest").run.run() end, { desc = "Run nearest test" })
+map("n", "<leader>tT", function() require("neotest").run.run(vim.fn.expand("%")) end, { desc = "Run all tests in file" })
+map("n", "<leader>ts", function() require("neotest").summary.toggle() end, { desc = "Toggle test summary" })
+map("n", "<leader>to", function() require("neotest").output.open({ enter = true }) end, { desc = "Show test output" })
+map("n", "<leader>tO", function() require("neotest").output_panel.toggle() end, { desc = "Toggle output panel" })

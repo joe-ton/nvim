@@ -2,7 +2,6 @@
 return {
   {
     "stevearc/conform.nvim",
-    -- event = 'BufWritePre', -- keep commented for now (we'll enable it in conform.lua)
     opts = require "configs.conform",
   },
   {
@@ -13,6 +12,9 @@ return {
         "html", "css",
         "go", "markdown",
         "rust", "typescript", "javascript",
+        "dart",   -- Flutter
+        "cpp",    -- C++
+        "c",      -- C
       },
       highlight = {
         enable = true,
@@ -23,7 +25,6 @@ return {
     "williamboman/mason.nvim",
     opts = {
       ensure_installed = {
-        -- LSPs (rust-analyzer removed – rustaceanvim uses rustup version)
         "gopls",
         "pyright",
         "clangd",
@@ -44,11 +45,10 @@ return {
       },
     },
   },
-  -- rustaceanvim – now forced to load early
   {
     "mrcjkb/rustaceanvim",
     version = "^8",
-    lazy = false,               -- <-- this is the key fix
+    lazy = false,
     config = function()
       local nvlsp = require "nvchad.configs.lspconfig"
       vim.g.rustaceanvim = {
@@ -76,6 +76,52 @@ return {
           },
         },
       }
+    end,
+  },
+
+  -- Neotest: run tests + instant jump to file:line:character (all your languages)
+  {
+    "nvim-neotest/neotest",
+    lazy = true,
+    dependencies = {
+      "nvim-neotest/nvim-nio",
+      "nvim-lua/plenary.nvim",
+      "antoinemadec/FixCursorHold.nvim",
+      "nvim-treesitter/nvim-treesitter",
+
+      "fredrikaverpil/neotest-golang",
+      "nvim-neotest/neotest-python",
+      "rouge8/neotest-rust",
+      "orjangj/neotest-ctest",
+
+      -- Flutter/Dart uses vim-test backend (most reliable for testWidgets + group)
+      "vim-test/vim-test",
+      "nvim-neotest/neotest-vim-test",
+    },
+    config = function()
+      require("neotest").setup({
+        adapters = {
+          require("neotest-golang")({
+            go_test_args = { "-v", "-race", "-count=1" },
+          }),
+          require("neotest-python")({
+            runner = "pytest",
+          }),
+          require("neotest-rust"),
+          require("neotest-ctest"),
+          require("neotest-vim-test")({
+            allow_file_types = { "dart" },
+          }),
+        },
+        summary = { open = "botright vsplit 65", animated = true },
+        output = { open_on_run = "short" },
+        quickfix = { open = false },
+        status = { virtual_text = true },
+      })
+
+      -- Flutter config
+      vim.g["test#dart#runner"] = "fluttertest"
+      vim.g["test#strategy"] = "neovim"
     end,
   },
 }
