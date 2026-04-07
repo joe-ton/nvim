@@ -31,7 +31,7 @@ require("lazy").setup({
         go     = { "golangcilint" },
         python = { "ruff" },
         cpp    = { "clangtidy" },
-        c      = { "clangtidy" },
+        -- c      = { "clangtidy" },
         -- Rust intentionally omitted (clippy runs via rust-analyzer LSP)
       })
 

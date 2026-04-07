@@ -304,6 +304,23 @@ return {
       require "configs.lspconfig"
     end,
   },
+  {
+    "ray-x/lsp_signature.nvim",   -- ← this gives you Jon-style rich popups
+    event = "VeryLazy",
+    opts = {
+      hint_enable = false,          -- no annoying inline text
+      floating_window = true,
+      floating_window_above_cur_line = true,
+      floating_window_off_x = 0,
+      floating_window_off_y = 0,
+      border = "rounded",           -- nice clean border like Jon’s
+      always_trigger = false,       -- only show when you type ( or move cursor inside args
+      toggle_key = "<C-k>",         -- optional: press Ctrl+k to force the popup
+    },
+    config = function(_, opts)
+      require("lsp_signature").setup(opts)
+    end,
+  },
 }
 
 
@@ -321,10 +338,12 @@ local map = vim.keymap.set
 map("n", ";", ":", { desc = "CMD enter command mode" })
 map("i", "jk", "<ESC>")
 
+map("n", "K", vim.lsp.buf.hover, { desc = "Show hover information" })
+
 -- Run Go file (Ubuntu/Linux version)
 map("n", "<leader>r", "<cmd>split | term go run %<cr>", { desc = "Run Go file" })
 
-map("n", "<leader>t", ":GoTags add json<CR>", { desc = "Add JSON tags to struct" })
+map("n", "<leader>t", "<cmd>GoTags<CR>", { desc = "Add JSON tags to all structs" })
 
 -- Align struct fields in current file using goimports
 vim.keymap.set("n", "<leader>T", "<cmd>!gofumpt -w %<cr><cmd>edit!<cr>", {
@@ -353,6 +372,15 @@ vim.keymap.set("n", "<leader>fh", builtin.help_tags, { desc = "Help tags" })
 
 -- delete buffer
 vim.keymap.set("n", "<leader>q", "<cmd>bd<cr>", { desc = "Delete current buffer" })
+
+-- Neotest keymaps (no conflict with your existing <leader>t / <leader>T)
+local map = vim.keymap.set
+
+map("n", "<leader>tt", function() require("neotest").run.run() end, { desc = "Run nearest test" })
+map("n", "<leader>tT", function() require("neotest").run.run(vim.fn.expand("%")) end, { desc = "Run all tests in file" })
+map("n", "<leader>ts", function() require("neotest").summary.toggle() end, { desc = "Toggle test summary" })
+map("n", "<leader>to", function() require("neotest").output.open({ enter = true }) end, { desc = "Show test output" })
+map("n", "<leader>tO", function() require("neotest").output_panel.toggle() end, { desc = "Toggle output panel" })
 
 
 ================================================================================
@@ -486,7 +514,6 @@ return {
 return {
   {
     "stevearc/conform.nvim",
-    -- event = 'BufWritePre', -- keep commented for now (we'll enable it in conform.lua)
     opts = require "configs.conform",
   },
   {
@@ -497,6 +524,9 @@ return {
         "html", "css",
         "go", "markdown",
         "rust", "typescript", "javascript",
+        "dart",   -- Flutter
+        "cpp",    -- C++
+        "c",      -- C
       },
       highlight = {
         enable = true,
@@ -507,7 +537,6 @@ return {
     "williamboman/mason.nvim",
     opts = {
       ensure_installed = {
-        -- LSPs (rust-analyzer removed – rustaceanvim uses rustup version)
         "gopls",
         "pyright",
         "clangd",
@@ -528,11 +557,10 @@ return {
       },
     },
   },
-  -- rustaceanvim – now forced to load early
   {
     "mrcjkb/rustaceanvim",
     version = "^8",
-    lazy = false,               -- <-- this is the key fix
+    lazy = false,
     config = function()
       local nvlsp = require "nvchad.configs.lspconfig"
       vim.g.rustaceanvim = {
@@ -560,6 +588,52 @@ return {
           },
         },
       }
+    end,
+  },
+
+  -- Neotest: run tests + instant jump to file:line:character (all your languages)
+  {
+    "nvim-neotest/neotest",
+    lazy = true,
+    dependencies = {
+      "nvim-neotest/nvim-nio",
+      "nvim-lua/plenary.nvim",
+      "antoinemadec/FixCursorHold.nvim",
+      "nvim-treesitter/nvim-treesitter",
+
+      "fredrikaverpil/neotest-golang",
+      "nvim-neotest/neotest-python",
+      "rouge8/neotest-rust",
+      "orjangj/neotest-ctest",
+
+      -- Flutter/Dart uses vim-test backend (most reliable for testWidgets + group)
+      "vim-test/vim-test",
+      "nvim-neotest/neotest-vim-test",
+    },
+    config = function()
+      require("neotest").setup({
+        adapters = {
+          require("neotest-golang")({
+            go_test_args = { "-v", "-race", "-count=1" },
+          }),
+          require("neotest-python")({
+            runner = "pytest",
+          }),
+          require("neotest-rust"),
+          require("neotest-ctest"),
+          require("neotest-vim-test")({
+            allow_file_types = { "dart" },
+          }),
+        },
+        summary = { open = "botright vsplit 65", animated = true },
+        output = { open_on_run = "short" },
+        quickfix = { open = false },
+        status = { virtual_text = true },
+      })
+
+      -- Flutter config
+      vim.g["test#dart#runner"] = "fluttertest"
+      vim.g["test#strategy"] = "neovim"
     end,
   },
 }

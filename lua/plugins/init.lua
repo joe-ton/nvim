@@ -79,7 +79,7 @@ return {
     end,
   },
 
-  -- Neotest: run tests + instant jump to file:line:character (all your languages)
+  -- Neotest: run tests
   {
     "nvim-neotest/neotest",
     lazy = true,
@@ -94,7 +94,6 @@ return {
       "rouge8/neotest-rust",
       "orjangj/neotest-ctest",
 
-      -- Flutter/Dart uses vim-test backend (most reliable for testWidgets + group)
       "vim-test/vim-test",
       "nvim-neotest/neotest-vim-test",
     },
@@ -122,6 +121,26 @@ return {
       -- Flutter config
       vim.g["test#dart#runner"] = "fluttertest"
       vim.g["test#strategy"] = "neovim"
+    end,
+  },
+
+  -- 🔥 FIXED tiny-inline-diagnostic (this version works reliably)
+  {
+    "rachartier/tiny-inline-diagnostic.nvim",
+    event = "LspAttach",           -- changed to this for reliable loading with clangd
+    priority = 1000,
+    config = function()
+      require("tiny-inline-diagnostic").setup({
+        preset = "modern",
+        options = {
+          show_source = { enabled = true },
+          multilines = {
+            enabled = true,
+            always_show = true,
+          },
+        },
+      })
+      vim.diagnostic.config({ virtual_text = false })
     end,
   },
 }
